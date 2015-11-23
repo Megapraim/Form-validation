@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Form - validation</title>
+    <script>
+        var phoneOrMail = "";
+			function validateComment(input) {
+				if (input.value.length < 10) {
+					input.setCustomValidity("Enter minimum 10 characters.");
+				} else {
+					input.setCustomValidity("");
+				}
+			}
+		
+		function validateName(input) {
+			if ((!/[a-zA-Zа-яА-Я]/.test(input.value)) || (input.value.length < 2)) {
+				input.setCustomValidity("Please, enter minimum 2 characters/");
+			} else {
+				input.setCustomValidity("");
+			}
+		}
+		
+		function validatePhone(input) {
+			if (phoneOrMail != "mail") {
+				if (!/[0-9\(\)\+-]{6,}/.test(input.value)) {		
+					if (input.value != "") {
+						input.setCustomValidity("Please, enter valid phone number without spaces.");
+					} else {
+						input.setCustomValidity("");
+					}
+				} else {
+					input.setCustomValidity("");
+					phoneOrMail = "";
+				}
+			}	
+			if (input.value.length != 0) {
+				phoneOrMail = "phone";
+			}
+		}
+		
+		function validateMail(input) {
+			if (phoneOrMail != "phone") {
+				if (!/\S+@[a-zA-Z]+\.[a-zA-Z0-9]{2,}/.test(input.value)) {
+					if (input.value != "") {
+						input.setCustomValidity("Pleese, enter valid e-mail adress. For example: abc@def.gh");
+					} else {
+						input.setCustomValidity("");
+						phoneOrMail = "";
+					}
+				} else {
+					input.setCustomValidity("");
+				}
+			}	
+			if (input.value.length != 0) {	
+				phoneOrMail = "mail";
+			}
+		}
+		
+		function checkForm(input) {
+			if (phoneOrMail != "") {
+				input.setCustomValidity("");
+			} else {
+				input.setCustomValidity("Please, enter e-mail adress or phone number.");
+			}
+		}
+		</script>
+</head>
+<body>
+    <div id="form">
+      <form method="POST">
+      <table>
+        <tr>
+          <td width="307px">
+      			<p>
+      				<span class="form">Имя<sup>*</sup>:</span>
+      				<input type="text" name="name" required/ oninput="validateName(this)"> <br/>
+      			</p>
+      			<p>
+      				<span class="form">E-mail:</span>
+      				<input type="text" name="email" oninput="validateMail(this)"/>
+      			</p>
+      			<p>
+      				<span class="form">Телефон:</span>
+      				<input type="text" name="telNumber" oninput="validatePhone(this)"/> <br/>
+      			</p>
+          </td>
+          <td>
+			      <p>
+      				<span class="form">Текст<br/>сообщения<sup>*</sup>:</span>
+      				<textarea placeholder="Не менее 10-ти символов" name="message" id="message" required oninput="validateComment(this)"></textarea> <br/>
+      			</p>
+          </td>
+        </tr>
+    </table>
+			<input type="submit" onclick="checkForm(this)" value="Отправить"/>
+	  </form>
+  </div>
+</body>
+</html>
